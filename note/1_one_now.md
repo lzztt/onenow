@@ -15,7 +15,7 @@ One：融合简单
 Now：活在当下
 ```
 
-想好后就注册了域名 `onenow.life`。
+想好后就注册了域名 [`onenow.life`](https://www.onenow.life)。
 ```
 $ whois onenow.life | grep Creation
 Creation Date: 2019-04-16T06:28:48Z
