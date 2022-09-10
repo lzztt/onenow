@@ -21,7 +21,7 @@ Working software over comprehensive documentation
 
 所以，我需要在写笔记的第一天就有一个能用的网站，在建网站的第一天就开始用网站写笔记。边写笔记，边改进网站，笔记记录下网站演进的过程，网站建好时也会写完大量的笔记。这样从零开始，建网站和写笔记两不误。听起来很完美的计划。
 
-## 第一版: 使用[`GitHub Pages`](https://pages.github.com/)。
+## 第一版：使用[`GitHub Pages`](https://pages.github.com/)。
 
 因为它上手最简单，且能满足我对笔记的要求：
 - 笔记使用`Markdown`格式
