@@ -1,2 +1,3 @@
 - [One Now的由来](note/1_one_now)
 - [从零开始建站](note/2_bootstrap)
+- [关于笔记（Note）](note/3_about_note)
