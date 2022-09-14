@@ -3,4 +3,4 @@
 - [关于笔记（Note）](note/3_about_note)
 - [致虚守静，感恩的心](note/4_heart)
 - [从GitHub Pages到Container](note/5_containerization)
-- [工程师的价值观](note/6_engineering_values)
+- [可持续的价值观](note/6_engineering_values)
