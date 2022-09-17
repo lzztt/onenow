@@ -8,6 +8,7 @@ python3 build_notes.py
 
 ## Build Site
 ```
+yarn install
 yarn test
 yarn start
 yarn build
