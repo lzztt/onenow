@@ -6,9 +6,9 @@
 
 ## 前三版本的取舍
 
-- 第一版：`GitHub Pages`，选择“简单”和“速度”（第一天上线）。
-- 第二版：`Container` + `Jekyll`，选择“简单”和“灵活性”（运行环境可迁移性），这样网站可以运行在自己的开发电脑和网站服务器上。
-- 第三版：`React` + `TypeScript`，选择“生态兼容性”和“灵活性”，这样可以接入`React`和`JavaScript`的庞大生态，开始主流的前端开发。
+- [第一版](https://github.com/lzztt/onenow/tree/b7cdde585b23c219adfe169bde28b5d9cb232d59)：`GitHub Pages`，选择“简单”和“速度”（第一天上线）。
+- [第二版](https://github.com/lzztt/onenow/tree/657ee059bb3822bdfbb12bb402c86a77dc90890a)：`Container` + `Jekyll`，选择“简单”和“灵活性”（运行环境可迁移性），这样网站可以运行在自己的开发电脑和网站服务器上。
+- [第三版](https://github.com/lzztt/onenow/tree/354722daaf988dd47f35ebf4fdd72c1f95cec164)：`React` + `TypeScript`，选择“生态兼容性”和“灵活性”，这样可以接入`React`和`JavaScript`的庞大生态，开始主流的前端开发。
 
 “简单”一直是选择的侧重点，而不是“性能”或者“新颖”。如果一个选择经过一两天的测试，还存在未解决的问题，而不能令人满意，则它会因为“不简单”而被放弃。
 
