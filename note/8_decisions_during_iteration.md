@@ -26,4 +26,4 @@
 - `BootStrap`，而不是其他样式库。
 - `TypeScript`，而不是`JavaScript`（或其他前端语言）。可以借助IDE（vscode）的类型检查，在编码最早期避免类型方面的bug。
 - `yarn v1`，而不是`v3`（或`npm`）。`yarn v1`兼具速度和稳定性。`yarn v3`运行`Create React App`生成的初始代码时有错误。
-- `Create React App`，而不是`Vite`。因为`Vite`需要配置。我花了一晚上时间配置和测试，最后jest运行测试有问题。`Create React App`生成的初始代码从工程角度来看更成熟和易维护。
+- `Create React App`，而不是`Vite`。因为`Vite`需要配置。我花了一晚上时间配置和测试，最后`Jest`运行测试有问题。`Create React App`生成的初始代码从工程角度来看更成熟和易维护。
