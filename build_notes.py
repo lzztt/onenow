@@ -10,5 +10,5 @@ for i in files:
     with open(i) as f:
         notes.append({'url': i[:-3], 'data': f.read()})
 
-with open('src/gen/notes.json', 'w') as f:
+with open('frontend/src/gen/notes.json', 'w') as f:
     dump(notes, f, ensure_ascii=False)
