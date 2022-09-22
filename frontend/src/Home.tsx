@@ -1,17 +1,21 @@
 import { Link } from 'react-router-dom';
-import notes from './gen/notes.json';
+import * as pb from "./gen/proto/note/v1/note";
 
 const title = (data: string) => {
     return data.split('\n', 1).shift()?.substring(2);
 }
 
-function Home() {
+type Props = {
+    notes: pb.Note[]
+}
+
+function Home(props: Props) {
     return (
         <ul>
             {
-                notes.map((n, i) => (
+                props.notes.map((n, i) => (
                     <li key={i}>
-                        <Link to={"/note/" + i}>{title(n.data)}</Link>
+                        <Link to={"/note/" + i}>{title(n.body)}</Link>
                     </li>
                 ))
             }

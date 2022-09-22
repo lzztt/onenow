@@ -7,12 +7,6 @@ buf format proto -w
 buf generate
 ```
 
-## Prepare Notes
-```
-mkdir -p frontend/src/gen
-python3 build_notes.py
-```
-
 ## Build Frontend
 ```
 cd frontend
