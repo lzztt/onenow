@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package note.v1;
+
+message Note {
+  string body = 1;
+}
+
+service NoteService {
+  rpc GetNoteList(GetNoteListRequest) returns (GetNoteListResponse);
+}
+
+message GetNoteListRequest {}
+
+message GetNoteListResponse {
+  repeated Note notes = 1;
+}
