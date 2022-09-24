@@ -16,7 +16,7 @@ import (
 	"one.now/backend/note"
 )
 
-//go:embed gen/note gen/build
+//go:embed gen/note
 var gen embed.FS
 
 func getNotes() []*pb.Note {
@@ -58,21 +58,7 @@ func main() {
 		return true
 	}))
 
-	distFS, err := fs.Sub(gen, "gen/build")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	handler := http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
-		if wrappedServer.IsAcceptableGrpcCorsRequest(req) || wrappedServer.IsGrpcWebRequest(req) {
-			wrappedServer.ServeHTTP(resp, req)
-			return
-		}
-
-		http.FileServer(http.FS(distFS)).ServeHTTP(resp, req)
-	})
-
-	http.Handle("/", handler)
+	http.Handle("/", wrappedServer)
 
 	log.Println("Serving on http://0.0.0.0:3080")
 	if err := http.ListenAndServe(":3080", nil); err != nil {
