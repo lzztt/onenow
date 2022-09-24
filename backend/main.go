@@ -1,10 +1,10 @@
 package main
 
 import (
-	"embed"
-	"io/fs"
+	"flag"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 
@@ -16,29 +16,19 @@ import (
 	"one.now/backend/note"
 )
 
-//go:embed gen/note
-var gen embed.FS
-
 func getNotes() []*pb.Note {
-	noteFS, err := fs.Sub(gen, "gen/note")
-	if err != nil {
-		log.Fatal(err)
-	}
+	flag.Parse()
+	files := flag.Args()
+	notes := make([]*pb.Note, len(files))
 
-	matches, err := fs.Glob(noteFS, "*_*.md")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	notes := make([]*pb.Note, len(matches))
-
-	for _, file := range matches {
-		i, err := strconv.Atoi(strings.SplitN(file, "_", 2)[0])
+	for _, file := range files {
+		t := strings.Split(file, "/")
+		i, err := strconv.Atoi(strings.SplitN(t[len(t)-1], "_", 2)[0])
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		data, err := fs.ReadFile(noteFS, file)
+		data, err := os.ReadFile(file)
 		if err != nil {
 			log.Fatal(err)
 		}

@@ -14,7 +14,7 @@ buf generate
 cd backend
 rsync -av ../note gen/
 
-go run main.go
+go run main.go ../note/*
 go build
 ```
 
