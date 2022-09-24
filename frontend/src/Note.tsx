@@ -10,6 +10,10 @@ function Note(props: Props) {
     const params = useParams();
     const i = params.id ? parseInt(params.id) : -1;
 
+    if (props.notes.length === 0) {
+        return <></>;
+    }
+
     if (i < 0 || i >= props.notes.length) {
         return <Navigate replace to="/404" />;
     }

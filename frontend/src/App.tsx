@@ -30,7 +30,7 @@ function PageRouter(props: Props) {
 }
 
 const transport = new GrpcWebFetchTransport({
-  baseUrl: window.location.port === "3000" ? window.location.origin.replace(window.location.port, '3080') : "/",
+  baseUrl: process.env.REACT_APP_BACKEND as string,
 });
 const noteService = new NoteServiceClient(transport);
 
@@ -40,13 +40,18 @@ function App() {
 
   useEffect(() => {
     const getNotes = async () => {
-      try {
-        const resp = await noteService.getNoteList({});
-        const data = resp.response.notes;
-        setNotes(data);
-      } catch (error) {
-        setError(error as RpcError);
+      let data: pb.Note[] = [];
+
+      if (process.env.NODE_ENV !== 'test') {
+        try {
+          const resp = await noteService.getNoteList({});
+          data = resp.response.notes;
+        } catch (error) {
+          setError(error as RpcError);
+        }
       }
+
+      setNotes(data);
     }
 
     getNotes();
@@ -55,7 +60,7 @@ function App() {
   if (error !== undefined) {
     return (
       <div>
-        <h1>error: {error.message}</h1>
+        <h1>backend error: {error.message}</h1>
         <button onClick={() => setError(undefined)}>Clear error</button>
       </div>
     );
