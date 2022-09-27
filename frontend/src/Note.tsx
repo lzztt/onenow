@@ -1,5 +1,6 @@
 import { marked } from "marked";
 import { Navigate, useParams } from 'react-router-dom';
+import { stringify } from "uuid";
 import * as pb from "./gen/proto/note/v1/note";
 
 type Props = {
@@ -8,18 +9,27 @@ type Props = {
 
 function Note(props: Props) {
     const params = useParams();
-    const i = params.id ? parseInt(params.id) : -1;
 
     if (props.notes.length === 0) {
         return <></>;
     }
 
-    if (i < 0 || i >= props.notes.length) {
+    let body: string | null = null;
+    props.notes.some(n => {
+        if (stringify(n.uuid) === params.id) {
+            body = n.body
+            return true;
+        }
+
+        return false;
+    })
+
+    if (body === null) {
         return <Navigate replace to="/404" />;
     }
 
     return (
-        <p dangerouslySetInnerHTML={{ __html: marked(props.notes[i].body) }} />
+        <p dangerouslySetInnerHTML={{ __html: marked(body) }} />
     );
 }
 
