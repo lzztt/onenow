@@ -3,6 +3,7 @@ module one.now/backend
 go 1.19
 
 require (
+	github.com/google/uuid v1.3.0
 	github.com/improbable-eng/grpc-web v0.15.0
 	google.golang.org/grpc v1.49.0
 	google.golang.org/protobuf v1.28.1
