@@ -4,6 +4,7 @@ package note.v1;
 
 message Note {
   string body = 1;
+  bytes uuid = 2;
 }
 
 service NoteService {

@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/google/uuid"
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 
 	"google.golang.org/grpc"
@@ -23,10 +24,12 @@ func getNotes() []*pb.Note {
 
 	for _, file := range files {
 		t := strings.Split(file, "/")
-		i, err := strconv.Atoi(strings.SplitN(t[len(t)-1], "_", 2)[0])
+		p := strings.SplitN(t[len(t)-1], "_", 2)
+		i, err := strconv.Atoi(p[0])
 		if err != nil {
 			log.Fatal(err)
 		}
+		id := uuid.MustParse(p[1][:len(p[1])-3])
 
 		data, err := os.ReadFile(file)
 		if err != nil {
@@ -34,6 +37,7 @@ func getNotes() []*pb.Note {
 		}
 
 		notes[i-1] = &pb.Note{
+			Uuid: id[:],
 			Body: string(data),
 		}
 	}
