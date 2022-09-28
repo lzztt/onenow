@@ -19,7 +19,7 @@ python3 git_to_file.py | tee git_to_file.log
 ```
 cd backend
 
-go run main.go ../note/*_*-*.md
+go run main.go ../note/*-*_*.md
 go build
 ```
 
