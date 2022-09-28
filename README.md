@@ -9,11 +9,11 @@ buf format proto -w
 buf generate
 ```
 
-## Migrate notes from git to files
-```
-cd note
-python3 git_to_file.py | tee git_to_file.log
-```
+## Note files
+Note filenames have `<uuid>_<timestamp>.md` pattern.
+
+A note can have multiple versions. `uuid` identifies a note. `timestamp` identifies a version of a note.
+
 
 ## Build Backend
 ```
