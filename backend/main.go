@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc"
 
 	pb "one.now/backend/gen/proto/note/v1"
-	"one.now/backend/note"
+	"one.now/backend/handler"
 )
 
 var (
@@ -21,7 +21,7 @@ func main() {
 	flag.Parse()
 
 	gs := grpc.NewServer()
-	pb.RegisterNoteServiceServer(gs, note.New(*dir))
+	pb.RegisterNoteServiceServer(gs, handler.New(*dir))
 	wrappedServer := grpcweb.WrapServer(gs, grpcweb.WithOriginFunc(func(origin string) bool {
 		return true
 	}))
