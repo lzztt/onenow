@@ -33,6 +33,15 @@ func (s AuthService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.Login
 	}, nil
 }
 
+func (s AuthService) Logout(ctx context.Context, req *pb.LogoutRequest) (*pb.LogoutResponse, error) {
+	sess, err := GetSession(ctx)
+	if err == nil {
+		sess.Loggedin = false
+	}
+
+	return &pb.LogoutResponse{}, nil
+}
+
 func NewAuthService(email string) AuthService {
 	return AuthService{
 		allowedEmail: email,
