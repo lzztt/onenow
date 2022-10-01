@@ -20,7 +20,7 @@ func (s NoteService) GetNoteList(ctx context.Context, req *pb.GetNoteListRequest
 	}, nil
 }
 
-func New(dir string) NoteService {
+func NewNoteService(dir string) NoteService {
 	notes := repository.GetNotes(dir)
 
 	a := make([]*pb.Note, len(notes))
