@@ -4,10 +4,12 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/hex"
-	"errors"
 	"log"
 	"net/http"
 	"time"
+
+	"one.now/backend/entity"
+	"one.now/backend/repository"
 )
 
 const (
@@ -18,12 +20,6 @@ const (
 )
 
 type sessionKey struct{}
-
-type Session struct {
-	Loggedin bool
-}
-
-var sessions = map[string]*Session{}
 
 func newSid() (string, error) {
 	sid := make([]byte, sidNBytes)
@@ -59,46 +55,53 @@ func newSidCookie() (*http.Cookie, error) {
 	}, nil
 }
 
-func EnableSession(h http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodPost {
-			c, err := r.Cookie(cookieName)
-			if err != nil || len(c.Value) != sidNChars {
-				c, err = newSidCookie()
-				if err != nil {
-					log.Println(err)
+func getSid(w http.ResponseWriter, r *http.Request) (string, error) {
+	c, err := r.Cookie(cookieName)
 
-					h.ServeHTTP(w, r)
-					return
-				}
+	if err != nil || len(c.Value) != sidNChars {
+		c, err = newSidCookie()
 
-				http.SetCookie(w, c)
-				sessions[c.Value] = &Session{}
-			}
-
-			r = r.Clone(context.WithValue(r.Context(), sessionKey{}, c.Value))
+		if err != nil {
+			return "", err
 		}
 
+		http.SetCookie(w, c)
+	}
+
+	return c.Value, nil
+}
+
+func EnableSession(h http.Handler, store repository.Session) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			h.ServeHTTP(w, r)
+			return
+		}
+
+		sid, err := getSid(w, r)
+		if err != nil {
+			log.Println(err)
+
+			h.ServeHTTP(w, r)
+			return
+		}
+
+		s, err := store.GetSession(sid)
+		if err != nil {
+			s = &entity.Session{}
+		}
+
+		r = r.WithContext(context.WithValue(r.Context(), sessionKey{}, s))
+
 		h.ServeHTTP(w, r)
+
+		err = store.SaveSession(sid, s)
+		if err != nil {
+			log.Println(err)
+		}
 	})
 }
 
-func GetSession(ctx context.Context) (*Session, error) {
-	v := ctx.Value(sessionKey{})
-	if v == nil {
-		return nil, errors.New("no session key")
-	}
-
-	sid := v.(string)
-	if len(sid) != sidNChars {
-		return nil, errors.New("invalid session key")
-	}
-
-	s, ok := sessions[sid]
-	if !ok {
-		s = &Session{}
-		sessions[sid] = s
-	}
-
-	return s, nil
+func getSession(ctx context.Context) *entity.Session {
+	return ctx.Value(sessionKey{}).(*entity.Session)
 }

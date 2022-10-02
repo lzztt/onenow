@@ -3,32 +3,25 @@ package handler
 import (
 	"context"
 
+	"one.now/backend/controller"
 	pb "one.now/backend/gen/proto/note/v1"
 	"one.now/backend/mapper"
-	"one.now/backend/repository"
 )
 
 type NoteService struct {
 	pb.UnimplementedNoteServiceServer
 
-	notes []*pb.Note
+	ctrler controller.NoteCtrler
 }
 
 func (s NoteService) GetNoteList(ctx context.Context, req *pb.GetNoteListRequest) (*pb.GetNoteListResponse, error) {
 	return &pb.GetNoteListResponse{
-		Notes: s.notes,
+		Notes: mapper.ToProtoArray(s.ctrler.GetNoteList(ctx)),
 	}, nil
 }
 
-func NewNoteService(dir string) NoteService {
-	notes := repository.GetNotes(dir)
-
-	a := make([]*pb.Note, len(notes))
-	for i, n := range notes {
-		a[i] = mapper.ToProto(n)
-	}
-
+func NewNoteService(c controller.NoteCtrler) NoteService {
 	return NoteService{
-		notes: a,
+		ctrler: c,
 	}
 }

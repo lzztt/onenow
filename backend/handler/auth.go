@@ -3,47 +3,29 @@ package handler
 import (
 	"context"
 
+	"one.now/backend/controller"
 	pb "one.now/backend/gen/proto/auth/v1"
 )
 
 type AuthService struct {
 	pb.UnimplementedAuthServiceServer
 
-	allowedEmail string
+	ctrler controller.AuthCtrler
 }
 
 func (s AuthService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse, error) {
-	sess, err := GetSession(ctx)
-	if err != nil {
-		return &pb.LoginResponse{
-			Ok: false,
-		}, nil
-	}
-
-	ok := sess.Loggedin
-	if !ok {
-		ok = req.Email == s.allowedEmail
-		if ok {
-			sess.Loggedin = ok
-		}
-	}
-
 	return &pb.LoginResponse{
-		Ok: ok,
+		Ok: s.ctrler.Login(ctx, getSession(ctx), req.Email),
 	}, nil
 }
 
 func (s AuthService) Logout(ctx context.Context, req *pb.LogoutRequest) (*pb.LogoutResponse, error) {
-	sess, err := GetSession(ctx)
-	if err == nil {
-		sess.Loggedin = false
-	}
-
+	s.ctrler.Logout(ctx, getSession(ctx))
 	return &pb.LogoutResponse{}, nil
 }
 
-func NewAuthService(email string) AuthService {
+func NewAuthService(c controller.AuthCtrler) AuthService {
 	return AuthService{
-		allowedEmail: email,
+		ctrler: c,
 	}
 }

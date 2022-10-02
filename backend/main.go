@@ -9,9 +9,11 @@ import (
 
 	"google.golang.org/grpc"
 
+	"one.now/backend/controller"
 	authv1 "one.now/backend/gen/proto/auth/v1"
 	notev1 "one.now/backend/gen/proto/note/v1"
 	"one.now/backend/handler"
+	"one.now/backend/repository"
 )
 
 var (
@@ -24,14 +26,14 @@ func main() {
 
 	gs := grpc.NewServer()
 
-	notev1.RegisterNoteServiceServer(gs, handler.NewNoteService(*dir))
-	authv1.RegisterAuthServiceServer(gs, handler.NewAuthService(*email))
+	notev1.RegisterNoteServiceServer(gs, handler.NewNoteService(controller.NewNoteCtrler(*dir)))
+	authv1.RegisterAuthServiceServer(gs, handler.NewAuthService(controller.NewAuthCtrler(*email)))
 
 	wrappedServer := grpcweb.WrapServer(gs, grpcweb.WithOriginFunc(func(origin string) bool {
 		return true
 	}))
 
-	http.Handle("/", handler.EnableSession(wrappedServer))
+	http.Handle("/", handler.EnableSession(wrappedServer, repository.NewInMemorySession()))
 
 	log.Println("Serving on http://0.0.0.0:3080")
 	if err := http.ListenAndServe(":3080", nil); err != nil {
