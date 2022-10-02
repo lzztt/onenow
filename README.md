@@ -19,7 +19,7 @@ A note can have multiple versions. `uuid` identifies a note. `timestamp` identif
 ```
 cd backend
 
-go run main.go -dir=../note
+go run main.go -dir=../note -email=test@test.com
 go build
 ```
 
