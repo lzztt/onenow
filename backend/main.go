@@ -16,6 +16,10 @@ import (
 	"one.now/backend/repository"
 )
 
+const (
+	dev = "http://localhost:3000"
+)
+
 var (
 	dir   = flag.String("dir", "", "The directory contains note files")
 	email = flag.String("email", "", "Allowed email to login")
@@ -30,7 +34,7 @@ func main() {
 	authv1.RegisterAuthServiceServer(gs, handler.NewAuthService(controller.NewAuthCtrler(*email)))
 
 	wrappedServer := grpcweb.WrapServer(gs, grpcweb.WithOriginFunc(func(origin string) bool {
-		return true
+		return origin == dev
 	}))
 
 	http.Handle("/", handler.EnableSession(wrappedServer, repository.NewInMemorySession()))
