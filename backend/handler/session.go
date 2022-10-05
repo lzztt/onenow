@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	cookieName       = "SID"
+	cookieName       = "__Secure-SID"
 	sidNBytes        = 16
 	sidNChars        = sidNBytes * 2
 	oneYearInSeconds = int(time.Hour/time.Second) * 24 * 365
