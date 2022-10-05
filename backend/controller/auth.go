@@ -11,10 +11,6 @@ type AuthCtrler struct {
 }
 
 func (s AuthCtrler) Login(ctx context.Context, session *entity.Session, email string) bool {
-	if session == nil {
-		return false
-	}
-
 	ok := session.Loggedin
 	if !ok {
 		ok = email == s.allowedEmail
@@ -27,9 +23,7 @@ func (s AuthCtrler) Login(ctx context.Context, session *entity.Session, email st
 }
 
 func (s AuthCtrler) Logout(ctx context.Context, session *entity.Session) {
-	if session != nil {
-		session.Loggedin = false
-	}
+	session.Loggedin = false
 }
 
 func NewAuthCtrler(email string) AuthCtrler {
