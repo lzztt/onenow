@@ -47,7 +47,8 @@ func main() {
 
 	wrappedServer := grpcweb.WrapServer(gs, grpcweb.WithOriginFunc(originFunc))
 
-	http.Handle("/", handler.EnableSession(wrappedServer, repository.NewInMemorySession()))
+	s := repository.NewInMemorySession()
+	http.Handle("/", handler.EnableSession(wrappedServer, &s))
 
 	log.Println("Serving on https://localhost:3443")
 	if err := http.ListenAndServeTLS("localhost:3443", certFile, keyFile, nil); err != nil {

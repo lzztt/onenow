@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"encoding/hex"
+	"errors"
 	"log"
 	"math/rand"
 	"net/http"
@@ -20,6 +21,17 @@ const (
 )
 
 type sessionKey struct{}
+
+type sessionData struct {
+	sid     string
+	isNew   bool
+	session *entity.Session
+	store   repository.Session
+}
+
+func isValidSid(sid string) bool {
+	return len(sid) == sidNChars
+}
 
 func newSid() string {
 	sid := make([]byte, sidNBytes)
@@ -46,20 +58,14 @@ func newSidCookie(sid string) *http.Cookie {
 	}
 }
 
-func getSid(r *http.Request) (string, error) {
+func getSidFromCookie(r *http.Request) (string, error) {
 	c, err := r.Cookie(cookieName)
 
-	if err != nil || len(c.Value) != sidNChars {
+	if err != nil || !isValidSid(c.Value) {
 		return "", http.ErrNoCookie
 	}
 
 	return c.Value, nil
-}
-
-func newSession(w http.ResponseWriter) (string, *entity.Session) {
-	sid := newSid()
-	http.SetCookie(w, newSidCookie(sid))
-	return sid, &entity.Session{}
 }
 
 func EnableSession(h http.Handler, store repository.Session) http.Handler {
@@ -69,35 +75,58 @@ func EnableSession(h http.Handler, store repository.Session) http.Handler {
 			return
 		}
 
-		var s *entity.Session
-		sid, err := getSid(r)
-		if err == nil {
-			v, err := store.GetSession(sid)
-
-			if err != nil {
-				s = &entity.Session{}
-			} else {
-				s = v
-			}
-		} else {
-			sid, s = newSession(w)
+		d := &sessionData{
+			session: nil,
+			isNew:   false,
+			store:   store,
 		}
 
-		r = r.WithContext(context.WithValue(r.Context(), sessionKey{}, s))
+		var err error
+		d.sid, err = getSidFromCookie(r)
+		if err != nil {
+			d.sid = newSid()
+			d.isNew = true
+			http.SetCookie(w, newSidCookie(d.sid))
+		}
+
+		r = r.WithContext(context.WithValue(r.Context(), sessionKey{}, d))
 
 		h.ServeHTTP(w, r)
 
-		err = store.SaveSession(sid, s)
+		if d.session == nil {
+			return
+		}
+
+		err = store.SaveSession(d.sid, d.session)
 		if err != nil {
 			log.Println(err)
 		}
 	})
 }
 
-func getSession(ctx context.Context) *entity.Session {
-	p := ctx.Value(sessionKey{})
-	if p == nil {
-		log.Fatalln("session is not enabled")
+func GetSession(ctx context.Context) (*entity.Session, error) {
+	b, ok := ctx.Value(sessionKey{}).(*sessionData)
+	if !ok {
+		return nil, errors.New("session is not enabled")
 	}
-	return p.(*entity.Session)
+
+	if b.session != nil {
+		return b.session, nil
+	}
+
+	if b.isNew {
+		b.session = &entity.Session{}
+		return b.session, nil
+	}
+
+	v, err := b.store.GetSession(b.sid)
+	if err == nil {
+		b.session = v
+		return b.session, nil
+	} else if err == repository.ErrNoSession {
+		b.session = &entity.Session{}
+		return b.session, nil
+	}
+
+	return nil, err
 }

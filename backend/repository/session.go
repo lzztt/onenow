@@ -1,6 +1,12 @@
 package repository
 
-import "one.now/backend/entity"
+import (
+	"errors"
+
+	"one.now/backend/entity"
+)
+
+var ErrNoSession = errors.New("session does not exist")
 
 type Session interface {
 	GetSession(string) (*entity.Session, error)
@@ -11,7 +17,7 @@ type InMemorySession struct {
 	sessions map[string]*entity.Session
 }
 
-func (s InMemorySession) GetSession(sid string) (*entity.Session, error) {
+func (s *InMemorySession) GetSession(sid string) (*entity.Session, error) {
 	v, ok := s.sessions[sid]
 	if !ok {
 		v = &entity.Session{}
@@ -21,7 +27,7 @@ func (s InMemorySession) GetSession(sid string) (*entity.Session, error) {
 	return v, nil
 }
 
-func (s InMemorySession) SaveSession(sid string, v *entity.Session) error {
+func (s *InMemorySession) SaveSession(sid string, v *entity.Session) error {
 	s.sessions[sid] = v
 	return nil
 }
