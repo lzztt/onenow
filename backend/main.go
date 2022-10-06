@@ -1,10 +1,10 @@
 package main
 
 import (
-	"flag"
 	"log"
 	"net/http"
 
+	"github.com/ilyakaznacheev/cleanenv"
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 
 	"google.golang.org/grpc"
@@ -16,31 +16,31 @@ import (
 	"one.now/backend/repository"
 )
 
-const (
-	certFile = "../cert/localhost.pem"
-	keyFile  = "../cert/localhost-key.pem"
-)
+func getConfig() config {
+	var c config
 
-var (
-	dir   = flag.String("dir", "", "The directory contains note files")
-	email = flag.String("email", "", "Allowed email to login")
-)
+	if err := cleanenv.ReadConfig("config.yaml", &c); err != nil {
+		log.Fatal(err)
+	}
+
+	return c
+}
 
 func main() {
-	flag.Parse()
+	c := getConfig()
 
 	gs := grpc.NewServer()
 
-	notev1.RegisterNoteServiceServer(gs, handler.NewNoteService(controller.NewNoteCtrler(*dir)))
-	authv1.RegisterAuthServiceServer(gs, handler.NewAuthService(controller.NewAuthCtrler(*email)))
+	notev1.RegisterNoteServiceServer(gs, handler.NewNoteService(controller.NewNoteCtrler(c.Data.NoteDir)))
+	authv1.RegisterAuthServiceServer(gs, handler.NewAuthService(controller.NewAuthCtrler(c.Secret.AllowedEmail)))
 
 	wrappedServer := grpcweb.WrapServer(gs)
 
 	s := repository.NewInMemorySession()
 	http.Handle("/", handler.EnableSession(wrappedServer, &s))
 
-	log.Println("Serving on https://localhost:3443")
-	if err := http.ListenAndServeTLS("localhost:3443", certFile, keyFile, nil); err != nil {
+	log.Println("Serving on https://localhost:" + c.Server.Port)
+	if err := http.ListenAndServeTLS("localhost:"+c.Server.Port, c.Server.CertFile, c.Server.KeyFile, nil); err != nil {
 		log.Fatal(err)
 	}
 }

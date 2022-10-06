@@ -1,0 +1,7 @@
+server:
+  port: 3443
+  certFile: ../cert/localhost.pem
+  keyFile: ../cert/localhost-key.pem
+
+data:
+  noteDir: ../note

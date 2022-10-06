@@ -41,7 +41,9 @@ done
 ```
 cd backend
 
-go run main.go -dir=../note -email=test@test.com
+echo 'ALLOWED_EMAIL=test@test.com' > secret.env
+(set -a; . secret.env; go run .)
+
 go build
 ```
 
@@ -53,5 +55,6 @@ cd frontend
 yarn install
 yarn test
 yarn start
+
 yarn build
 ```
