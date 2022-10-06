@@ -2,6 +2,7 @@
   "name": "onenow",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://localhost:3443",
   "dependencies": {
     "@protobuf-ts/grpcweb-transport": "^2.8.1",
     "@protobuf-ts/runtime": "^2.8.1",

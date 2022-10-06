@@ -4,9 +4,6 @@ import { AuthServiceClient } from "./gen/proto/auth/v1/auth.client";
 
 const transport = new GrpcWebFetchTransport({
   baseUrl: process.env.REACT_APP_BACKEND as string,
-  fetchInit: {
-    credentials: 'include',
-  },
 });
 
 export const noteService = new NoteServiceClient(transport);

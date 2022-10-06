@@ -41,7 +41,7 @@ done
 ```
 cd backend
 
-go run main.go -dev -dir=../note -email=test@test.com
+go run main.go -dir=../note -email=test@test.com
 go build
 ```
 
@@ -52,6 +52,6 @@ cd frontend
 
 yarn install
 yarn test
-HTTPS=true SSL_CRT_FILE=../cert/localhost.pem SSL_KEY_FILE=../cert/localhost-key.pem yarn start
+yarn start
 yarn build
 ```
