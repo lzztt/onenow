@@ -4,7 +4,6 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/ilyakaznacheev/cleanenv"
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 
 	"google.golang.org/grpc"
@@ -15,16 +14,6 @@ import (
 	"one.now/backend/handler"
 	"one.now/backend/repository"
 )
-
-func getConfig() config {
-	var c config
-
-	if err := cleanenv.ReadConfig("config.yaml", &c); err != nil {
-		log.Fatal(err)
-	}
-
-	return c
-}
 
 func main() {
 	c := getConfig()
