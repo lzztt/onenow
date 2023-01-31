@@ -1,6 +1,7 @@
 import './App.css';
 import Home from './Home';
 import Note from './Note';
+import Navbar from './Navbar';
 import { useEffect, useState } from "react";
 import {
   BrowserRouter,
@@ -74,7 +75,10 @@ function App() {
     <BrowserRouter>
       <div>
         <h1><Link to="/">One Now</Link></h1>
-        <Link to={login ? "/logout" : "login"}>{login ? "Logout" : "Login"}</Link>
+        <Navbar>
+          <Link to="/sre">SRE</Link>
+          <Link to={login ? "/logout" : "login"}>{login ? "Logout" : "Login"}</Link>
+        </Navbar>
         <PageRouter notes={notes} setLogin={setLogin} />
       </div>
     </BrowserRouter>
