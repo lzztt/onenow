@@ -2,7 +2,7 @@
 
 ## Build Proto
 
-```
+```bash
 mkdir -p frontend/src/gen backend/gen
 
 buf lint proto
@@ -14,7 +14,7 @@ buf generate
 
 Install [mkcert](https://github.com/FiloSottile/mkcert), then create `localhost` certificate.
 
-```
+```bash
 mkdir cert && cd cert
 
 mkcert localhost
@@ -28,7 +28,7 @@ A note can have multiple versions. `uuid` identifies a note. `timestamp` identif
 
 Commands to generate 10 dummy notes:
 
-```
+```bash
 mkdir note && cd note
 
 for i in {1..10}; do
@@ -39,7 +39,7 @@ done
 
 ## Build Backend
 
-```
+```bash
 cd backend
 
 echo 'ALLOWED_EMAIL=test@test.com' > .env.development.local
@@ -50,7 +50,7 @@ go build
 
 ## Build Frontend
 
-```
+```bash
 cd frontend
 
 yarn install

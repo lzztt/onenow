@@ -62,7 +62,7 @@ func loadMetadata(files []string) []*Metadata {
 	}
 
 	sort.SliceStable(v, func(i, j int) bool {
-		return v[i].createTime < v[j].createTime
+		return v[i].createTime > v[j].createTime
 	})
 
 	return v
