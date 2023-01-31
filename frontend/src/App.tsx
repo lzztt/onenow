@@ -74,7 +74,7 @@ function App() {
     <BrowserRouter>
       <div>
         <h1><Link to="/">One Now</Link></h1>
-        <Link to={login ? "/logout" : "login"}>{login ? "登出" : "登录"}</Link>
+        <Link to={login ? "/logout" : "login"}>{login ? "Logout" : "Login"}</Link>
         <PageRouter notes={notes} setLogin={setLogin} />
       </div>
     </BrowserRouter>
