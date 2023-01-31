@@ -32,6 +32,7 @@ function PageRouter(props: Props) {
       <Route path="/login" element={<Login setLogin={props.setLogin} />} />
       <Route path="/logout" element={<Logout setLogin={props.setLogin} />} />
       <Route path="/error" element={<Error />} />
+      <Route path="/sre" element={<Home notes={props.notes.slice(0, props.notes.length - 29)} />} />
       <Route path="*" element={NotFound} />
     </Routes>
   );
