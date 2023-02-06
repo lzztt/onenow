@@ -9,6 +9,7 @@ import {
   Navigate,
   Route,
   Routes,
+  useLocation,
 } from "react-router-dom";
 import * as pb from "./gen/proto/note/v1/note";
 import { RpcError } from "@protobuf-ts/runtime-rpc";
@@ -16,6 +17,14 @@ import { authService, noteService } from './Gateway';
 import Logout from './Logout';
 import Login from './Login';
 import Error from './Error';
+
+declare global {
+  interface Window {
+      app: {
+        gtagPageView: Function
+      };
+  }
+}
 
 const NotFound = <div className="err">404 Not Found :(</div>
 
@@ -25,6 +34,11 @@ type Props = {
 }
 
 function PageRouter(props: Props) {
+  const location = useLocation();
+  useEffect(() => {
+    window.app?.gtagPageView();
+  }, [location]);
+
   return (
     <Routes>
       <Route path="/" element={<Home notes={props.notes} />} />,

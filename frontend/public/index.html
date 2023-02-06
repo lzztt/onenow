@@ -42,5 +42,24 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-K40KJP64YH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-K40KJP64YH', {
+        send_page_view: false
+      });
+
+      window.app = window.app || {};
+      app.gtagPageView = () => gtag('event', 'page_view', {
+        page_location: location.href,
+        page_path: location.pathname,
+        send_to: 'G-K40KJP64YH',
+      });
+    </script>
   </body>
 </html>
