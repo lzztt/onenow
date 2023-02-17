@@ -8,15 +8,13 @@ service AuthService {
 }
 
 message LoginRequest {
-    string email = 1;
+  string email = 1;
 }
 
 message LoginResponse {
-    bool ok = 1;
+  bool ok = 1;
 }
 
-message LogoutRequest {
-}
+message LogoutRequest {}
 
-message LogoutResponse {
-}
+message LogoutResponse {}

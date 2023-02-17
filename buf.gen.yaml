@@ -4,7 +4,7 @@ managed:
   go_package_prefix:
     default: one.now/backend/gen
 plugins:
-  - remote: buf.build/timostamm/plugins/protobuf-ts:v2.8.1-1
+  - remote: buf.build/timostamm/plugins/protobuf-ts:v2.8.2-1
     out: frontend/src/gen
     opt:
       - optimize_code_size
