@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.4.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.4.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.4.0/dist/theme/white.css" />
+  <style>
+    .reveal h1,
+    .reveal h2,
+    .reveal h3,
+    .reveal h4,
+    .reveal h5,
+    .reveal h6 {
+      text-transform: none;
+    }
+
+    .reveal pre code {
+      max-height: initial;
+    }
+
+    .mermaid {
+      line-height: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section data-markdown="" data-separator="^\n\n">
+      </section>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.4.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.4.0/plugin/markdown/markdown.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js-mermaid-plugin@1.1.0/plugin/mermaid/mermaid.js"></script>
+  <script>
+    const fileParam = (new URLSearchParams(window.location.search)).get("file");
+    const file = fileParam ? fileParam + ".md" : "README.md";
+    document.title = file;
+
+    window.onload = function () {
+      const section = document.querySelector("section[data-markdown]");
+      section.setAttribute("data-markdown", file);
+
+      Reveal.initialize({
+        hash: true,
+        hashOneBasedIndex: true,
+        slideNumber: 'c/t',
+        plugins: [
+          RevealMarkdown,
+          RevealMermaid,
+        ],
+      });
+    }
+  </script>
+</body>
+
+</html>
