@@ -7,8 +7,9 @@ Generate web pages and slides from `Markdown` docs.
 
 ```mermaid
 flowchart LR
-    A(Markdown) -->|marked| B(HTML)
-    B -->|mermaid.js| C(Diagram)
+    A(Markdown) -->|marked| C(HTML)
+    A -->|mermaid.js| B(Diagram)
+    B --> C
     C --> D(Web Page)
     C -->|reveal.js| E(Slides)
 ```
