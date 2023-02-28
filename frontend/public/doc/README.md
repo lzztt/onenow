@@ -17,8 +17,8 @@ flowchart LR
 ## Usage
 
 - Write a doc: `README.md`
-- Web page: [`/doc/page.html?file=README`](/doc/page.html?file=README)
-- Slides: [`/doc/slides.html?file=README`](/doc/slides.html?file=README)
+- Web page: [`/doc/page.html?file=README`](https://onenow.life/doc/page.html?file=README)
+- Slides: [`/doc/slides.html?file=README`](https://onenow.life/doc/slides.html?file=README)
 
 
 ## Files
