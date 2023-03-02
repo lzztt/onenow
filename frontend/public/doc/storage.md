@@ -87,8 +87,7 @@ Problems: metadata in Oracle
 
 - DB hit vertical scaling limit
 - DB was SPOF of the Storage Service
-- DB failover was never tested
-  - eventually failed
+- DB failover was not reliable
 - Rebuilding DB indexes took a long time
 
 
