@@ -27,7 +27,7 @@
   <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
 
-    var fileParam = (new URLSearchParams(window.location.search)).get("file");
+    let fileParam = (new URLSearchParams(window.location.search)).get("file");
     if (!fileParam) {
       fileParam = "README";
     }
