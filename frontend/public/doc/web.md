@@ -128,6 +128,11 @@ flowchart LR
 With real SSD, 1 GB RAM
 
 
+## Let's improve the implementation
+
+rewrite, again and again
+
+
 Frontend
 
 - 2014: Mobile-first [responsive theme](https://github.com/lzztt/bbs.frontend/tree/a6fec7d21394eed11f2e64c659f400eeb1ba22f6/themes/roselife/css)
@@ -145,6 +150,13 @@ Backend
 - 2015: Upgrade to `PHP 7`, `HTTP/2`, `https`
 - 2017: Add [`Composer` and `zend psr7/message`](https://github.com/lzztt/bbs.backend/commit/d80113ba55488e6bd77870eef75bb27bdb55d2c5#diff-f37acfaa6b11f575a9a6f41a75fa73a61d0f8ebc2c9b8cddc215d8aca10e44f5), and [`PHP` type declaration](https://github.com/lzztt/bbs.backend/commit/885f19c95d366f8142da91d9591bfe02e22f26ae)
 - 2020: Update to `PHP 8`, add `Redis` (session, rate-limiting, segment cache, backend metrics), remove PHP template rendering
+
+
+### Lesson Learned
+
+Shouldn't push too much business logic into DB
+
+[stored procedures](https://github.com/lzztt/bbs.database/tree/master/routine): difficult to test and evolve
 
 
 Favourite Languages
