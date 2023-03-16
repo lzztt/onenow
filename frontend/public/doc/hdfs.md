@@ -152,7 +152,7 @@ Rack: /hypervisor-hash-3
   - Placement File
   - Placement File + Placement Group
   - Placement Group
-- `topology.sh ` doesn't need to change
+- `topology.sh` doesn't need to change
 
 
 `$HADOOP/bin/topology.map`
@@ -252,7 +252,7 @@ Cluster host balancing automation
 
 - **Reuse existing implementation** vs **a full new topology implementation**
   - Implementation complexity
-  - backward compitibility
+  - Backward compatibility
 - **Add new sets of hosts** vs **add existing hosts to PG**
   - Migration speed
     - Rolling stop-move-start operation was slow
