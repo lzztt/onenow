@@ -278,7 +278,7 @@ Cluster host balancing automation
   - HMaster overloaded when processing region reassignment
   - Unexpected offline jobs blocked data migration
   - Unhandled topology for external HDFS clients (implementation bug)
-  - Caches need to be cleared: topology cache, region cache
+  - Caches needed to be cleared: topology cache, region cache
 
 
 ## Recent Docs
