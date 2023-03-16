@@ -1,15 +1,22 @@
 # HDFS Topology Migration
 
 
-- Background: HBase & HDFS
+- HBase & HDFS
+- HDFS Rack Awareness
+- Topology Implementation with Placement File
+- Topology Implementation with Placement Group
+- Migration
+- Observibility and Automation
+- Impacts and Lessons Learned
 
 
-![HBase](hdfs/hbase.jpg)
+
+![HBase](hdfs/hbase.svg)
 
 
-## HDFS Rack awareness
+## HDFS Rack Awareness
 
-HDFS block placement will use rack awareness for fault tolerance by placing one block replica on a different rack.
+HDFS block placement uses rack awareness for fault tolerance, by placing block replicas on different racks.
 
 
 ```mermaid
@@ -70,13 +77,15 @@ i-4b5c6d7e8f9a0f1e  hypervisor-hash-1
 i-5e3a9b8f1e2d3c4f  hypervisor-hash-3
 ```
 
-dumped every 10 minues to files in a `s3` bucket for each `az`
+dumped every 10 minues to files in an `s3` bucket for each `az`
 
+
+## Topology Generaion
 
 Topology Mapping
-`$HADOOP_HOME/bin/topology.map`
+`$HADOOP/bin/topology.map`
 
-Generated from AWS Placement File
+Generated from AWS Placement Files
 
 ```text
 <data node IP> <rack location>
@@ -89,10 +98,12 @@ Generated from AWS Placement File
 ```
 
 
+## Topology Consumption
+
 ```mermaid
 flowchart LR
-    A(NameNode) -- exec --> B($HADOOP_HOME/bin/topology.sh)
-    B -- query --> C($HADOOP_HOME/bin/topology.map)
+    A(NameNode) -- exec --> B($HADOOP/bin/topology.sh)
+    B -- query --> C($HADOOP/bin/topology.map)
 ```
 
 ```console
@@ -148,7 +159,7 @@ Rack: /hypervisor-hash-3
 If we can merge the data ingestion (mapping generation) path, we don't need to modify the data consumption (query) path.
 
 
-`$HADOOP_HOME/bin/topology.map` - initial
+`$HADOOP/bin/topology.map` - initial
 
 ```text
 <data node IP> <rack location>
@@ -161,7 +172,7 @@ If we can merge the data ingestion (mapping generation) path, we don't need to m
 ```
 
 
-`$HADOOP_HOME/bin/topology.map` - hybrid
+`$HADOOP/bin/topology.map` - hybrid
 
 ```text
 <data node IP> <rack location>
@@ -183,7 +194,7 @@ If we can merge the data ingestion (mapping generation) path, we don't need to m
 data migratioin from old hosts to new hosts
 
 
-`$HADOOP_HOME/bin/topology.map` - final
+`$HADOOP/bin/topology.map` - final
 
 ```text
 <data node IP> <rack location>
@@ -198,8 +209,13 @@ data migratioin from old hosts to new hosts
 
 ### New host provisitioning
 
-- Create Partition Placement Group for each `AZ`
-- Update host provisioning to have Placement Group set
+- Create a 3-partition Placement Group for each `AZ`
+- Update host provisioning to support placement parameters
+
+```python
+  GroupName = "hbase_us-east-1a"
+  PartitionNumber = 3  # optional
+```
 
 
 ### New topology generation
@@ -217,20 +233,62 @@ data migratioin from old hosts to new hosts
 
 ### Data migration (on standby cluster)
 
-- stop HBase regionserver serive on old hosts
-- exclude old hosts from HDFS
-- wait for host state from "Decommissioning" to "Decommissioned"
+- Stop HBase RegionServer serive on old hosts
+- Exclude old hosts (IPs) from HDFS
+- Wait for host state from "Decommissioning" to "Decommissioned"
 - Terminate old hosts
 - Improve HBase data locality
   - balance regions
   - major compaction
 
 
-## Benefits
+## Observibility and Automation
+
+New metrics: host distribution
+
+```text
+hadoop.hdfs.topology.host_count[rack=1,2,3]
+```
+
+New alert: host imbalance
+
+```text
+stdev(
+    hadoop.hdfs.topology.host_count[rack=1,2,3]
+) > 1
+```
+
+Host balancing automation
+
+- Create new hosts in low-used racks
+- Decommission extra hosts in over-used racks
+
+
+## Impacts
 
 - Eliminated Placement File tech debt
 - Reduced host provision time
-  - don't need to wait for Placement File generation
+  - don't need to wait for Placement File generation (10 min)
 - Improved data availibility
   - hosts on different hypervisors might be in the same physical rack (failure domain)
   - Amazon EC2 ensures that each partition within a placement group has its own set of racks. Each rack has its own network and power source.
+
+
+## Lessons Learned
+
+- `prod` environment is more complex than `dev`, and `test`
+  - high traffic
+  - different use cases and traffic patterns (config, downstream apps, offline jobs)
+  - group clusters by use cases, plan accordingly
+
+
+- Bugs will exist in the implementation
+  - needed to support rack awareness for external HDFS clients (default rack)
+  - start with small / low-tier clusters, standby clusters
+  - feature flags, roll back mechanism, and backward compatibility
+
+
+- Communication is important
+  - cluster users
+  - DB oncallers, app oncallers
+  - get user / owner support when debugging issues
