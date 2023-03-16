@@ -292,3 +292,12 @@ Host balancing automation
   - cluster users
   - DB oncallers, app oncallers
   - get user / owner support when debugging issues
+
+
+## Recent Docs
+
+- [Documentation as Code](https://github.com/lzztt/onenow/tree/main/frontend/public/doc)
+- [Evolution of Storage](https://onenow.life/doc/page.html?file=storage)
+  - [Postmortem](https://onenow.life/doc/page.html?file=postmortem)
+- [A Journey to Web Development](https://onenow.life/doc/page.html?file=web)
+- [HDFS Topology Migration](https://onenow.life/doc/page.html?file=hdfs)
