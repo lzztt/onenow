@@ -94,8 +94,9 @@ hostname -> EC2 instance ID -> IP
 
 ```mermaid
 flowchart LR
-    A(NameNode) -- exec --> B($HADOOP/bin/topology.sh)
-    B -- query --> C($HADOOP/bin/topology.map)
+    A(NameNode) -- query --> B(topology cache)
+    A -- exec --> C($HADOOP/bin/topology.sh)
+    C -- query --> D($HADOOP/bin/topology.map)
 ```
 
 ```console
@@ -277,7 +278,7 @@ Cluster host balancing automation
   - HMaster overloaded when processing region reassignment
   - Unexpected offline jobs blocked data migration
   - Unhandled topology for external HDFS clients (implementation bug)
-  - Cache need to be cleared: topology cache, region cache
+  - Caches need to be cleared: topology cache, region cache
 
 
 ## Recent Docs
