@@ -274,8 +274,10 @@ Cluster host balancing automation
 
 - Wrong assumptions cause bugs and delays
   - Failover didn't work on old clusters
+  - HMaster overloaded when processing region reassignment
   - Unexpected offline jobs blocked data migration
   - Unhandled topology for external HDFS clients (implementation bug)
+  - Cache need to be cleared: topology cache, region cache
 
 
 ## Recent Docs
