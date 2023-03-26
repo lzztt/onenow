@@ -18,8 +18,8 @@ flowchart LR
 ## Usage
 
 - Write a doc: `README.md`
-- Web page: [`/doc/page.html?file=README`](https://onenow.life/doc/page.html?file=README)
-- Slides: [`/doc/slides.html?file=README`](https://onenow.life/doc/slides.html?file=README)
+- Web page: [`/doc/page.html?file=README`](/doc/page.html?file=README)
+- Slides: [`/doc/slides.html?file=README`](/doc/slides.html?file=README)
 
 
 ## Files
@@ -33,6 +33,23 @@ $ wc -l doc/*.html
   63 doc/slides.html
  120 total
 ```
+
+
+## Run it on localhost
+
+To run the doc site on your local host, you can use Python's built-in http server.
+
+### In Terminal
+```
+git clone https://github.com/lzztt/onenow.git
+
+cd onenow/frontend/public
+python3 -m http.server 80
+```
+
+### In Browser
+
+<http://localhost/doc/page.html>
 
 
 ## Dependencies
