@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'Montserrat';
+    src: url('https://cdn.jsdelivr.net/npm/@fontsource/montserrat@4.5.14/500.min.css');
+}
+
+h1 svg {
+    height: 1.2em;
+}
