@@ -20,9 +20,9 @@ import Error from './Error';
 
 declare global {
   interface Window {
-      app: {
-        gtagPageView: Function
-      };
+    app: {
+      gtagPageView: Function
+    };
   }
 }
 
@@ -39,14 +39,17 @@ function PageRouter(props: Props) {
     window.app?.gtagPageView();
   }, [location]);
 
+  const sreNotes = props.notes.slice(-35, -29);
+  const homeNotes = props.notes.slice(0, -35).concat(props.notes.slice(-29));
+
   return (
     <Routes>
-      <Route path="/" element={<Home notes={props.notes} />} />,
+      <Route path="/" element={<Home notes={homeNotes} />} />,
       <Route path="/note/:id" element={<Note notes={props.notes} />} />
       <Route path="/login" element={<Login setLogin={props.setLogin} />} />
       <Route path="/logout" element={<Logout setLogin={props.setLogin} />} />
       <Route path="/error" element={<Error />} />
-      <Route path="/sre" element={<Home notes={props.notes.slice(0, props.notes.length - 29)} />} />
+      <Route path="/sre" element={<Home notes={sreNotes} />} />
       <Route path="*" element={NotFound} />
     </Routes>
   );
