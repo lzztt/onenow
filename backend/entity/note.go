@@ -2,12 +2,10 @@ package entity
 
 import (
 	"time"
-
-	"github.com/google/uuid"
 )
 
 type Note struct {
-	Id             uuid.UUID
+	Id             int64
 	Body           string
 	CreateTime     time.Time
 	LastUpdateTime time.Time

@@ -7,7 +7,7 @@ import (
 
 func ToProto(n *entity.Note) *pb.Note {
 	return &pb.Note{
-		Uuid: n.Id[:],
+		Id:   n.Id,
 		Body: n.Body,
 	}
 }

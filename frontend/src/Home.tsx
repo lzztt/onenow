@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { stringify } from 'uuid';
 import * as pb from "./gen/proto/note/v1/note";
 
 const title = (data: string) => {
@@ -15,10 +14,9 @@ function Home(props: Props) {
         <ul>
             {
                 props.notes.map(n => {
-                    const id = stringify(n.uuid);
                     return (
-                        <li key={id}>
-                            <Link to={"/note/" + id}>{title(n.body)}</Link>
+                        <li key={n.id.toString()}>
+                            <Link to={"/note/" + n.id}>{title(n.body)}</Link>
                         </li>
                     );
                 })

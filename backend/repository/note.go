@@ -9,28 +9,30 @@ import (
 	"strings"
 	"time"
 
-	"github.com/google/uuid"
 	"one.now/backend/entity"
 )
 
 const (
-	file_pattern = "*-*_*.md"
+	file_pattern = "*_*.md"
 )
 
 type Metadata struct {
 	createTime     int64
 	lastUpdateTime int64
-	id             uuid.UUID
+	id             int64
 	file           string
 }
 
 func loadMetadata(files []string) []*Metadata {
-	m := make(map[uuid.UUID]*Metadata)
+	m := make(map[int64]*Metadata)
 
 	for _, file := range files {
 		t := strings.Split(file, "/")
 		p := strings.SplitN(t[len(t)-1], "_", 2)
-		id := uuid.MustParse(p[0])
+		id, err := strconv.ParseInt(p[0], 10, 64)
+		if err != nil {
+			log.Fatal(err)
+		}
 		time, err := strconv.ParseInt(p[1][:len(p[1])-3], 10, 64)
 		if err != nil {
 			log.Fatal(err)

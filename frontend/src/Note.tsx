@@ -1,6 +1,5 @@
 import { marked } from "marked";
 import { Navigate, useParams } from 'react-router-dom';
-import { stringify } from "uuid";
 import * as pb from "./gen/proto/note/v1/note";
 
 type Props = {
@@ -16,7 +15,7 @@ function Note(props: Props) {
 
     let body: string | null = null;
     props.notes.some(n => {
-        if (stringify(n.uuid) === params.id) {
+        if (n.id.toString() === params.id) {
             body = n.body
             return true;
         }

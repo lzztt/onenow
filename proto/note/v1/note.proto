@@ -3,8 +3,8 @@ syntax = "proto3";
 package note.v1;
 
 message Note {
-  string body = 1;
-  bytes uuid = 2;
+  int64 id = 1;
+  string body = 2;
 }
 
 service NoteService {
