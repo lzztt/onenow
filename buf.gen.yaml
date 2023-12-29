@@ -4,16 +4,16 @@ managed:
   go_package_prefix:
     default: one.now/backend/gen
 plugins:
-  - remote: buf.build/timostamm/plugins/protobuf-ts:v2.8.2-1
+  - plugin: buf.build/community/timostamm-protobuf-ts:v2.9.3
     out: frontend/src/gen
     opt:
       - optimize_code_size
       - eslint_disable
-  - remote: buf.build/protocolbuffers/plugins/go:v1.28.1-1
+  - plugin: buf.build/protocolbuffers/go:v1.32.0
     out: backend/gen
     opt:
       - paths=source_relative
-  - remote: buf.build/grpc/plugins/go:v1.2.0-1
+  - plugin: buf.build/grpc/go:v1.3.0
     out: backend/gen
     opt:
       - paths=source_relative

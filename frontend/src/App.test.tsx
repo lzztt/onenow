@@ -3,6 +3,6 @@ import App from './App';
 
 test('renders home page link', () => {
   render(<App />);
-  const linkElement = screen.getByText(/^One Now$/i);
+  const linkElement = screen.getByTitle('onenow.life');
   expect(linkElement).toBeInTheDocument();
 });

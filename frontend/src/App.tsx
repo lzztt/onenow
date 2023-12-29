@@ -93,10 +93,10 @@ function App() {
     <BrowserRouter>
       <div>
         <h1>
-          <Link to="/">
+          <Link to="/" title="onenow.life">
             <svg viewBox="0 0 400 80" xmlns="http://www.w3.org/2000/svg">
               <rect x="0" y="0" width="400" height="80" fill="#ffffff" />
-              <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" font-size="60" font-family="Montserrat, sans-serif" font-weight="500">
+              <text x="50%" y="60%" dominantBaseline="middle" textAnchor="middle" fontSize="60" fontFamily="Montserrat, sans-serif" fontWeight="500">
                 <tspan fill="#5cb85c">one</tspan><tspan fill="#6495ed">now</tspan><tspan>.</tspan><tspan fill="#ff7f50">life</tspan>
               </text>
             </svg>

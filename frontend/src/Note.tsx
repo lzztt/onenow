@@ -28,7 +28,7 @@ function Note(props: Props) {
     }
 
     return (
-        <p dangerouslySetInnerHTML={{ __html: marked(body) }} />
+        <p dangerouslySetInnerHTML={{ __html: marked(body) as string }} />
     );
 }
 
